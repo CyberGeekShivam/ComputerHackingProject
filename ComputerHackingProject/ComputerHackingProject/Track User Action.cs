@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using UrlHistoryLibrary;
+
+namespace ComputerHackingProject
+{
+    public partial class Track_User_Action : Form
+    {
+        public Track_User_Action()
+        {
+            InitializeComponent();
+        }
+
+        private void Track_User_Action_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            UrlHistoryWrapperClass urlHistoryWrapper = new UrlHistoryWrapperClass();
+            UrlHistoryWrapperClass.STATURLEnumerator enumerator
+                                                    = urlHistoryWrapper.GetEnumerator();
+            DataTable hackingtable = new DataTable();
+            DataColumn DC1 = new DataColumn("Browsing URL");
+            DataColumn DC2 = new DataColumn(" Browsing  Site Title");
+            hackingtable.Columns.Add(DC1);
+            hackingtable.Columns.Add(DC2);
+            while (enumerator.MoveNext())
+            {
+                string url = enumerator.Current.URL;
+                string title = "";
+                try
+                {
+                    title = string.IsNullOrEmpty(enumerator.Current.Title)
+                        ? enumerator.Current.LastVisited.ToLongDateString() : "";
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+                int val = url.IndexOf("www");
+                int val1 = url.IndexOf("ttp");
+                int val2 = url.IndexOf("ttps");
+                if (val > 0 || val1 > 0 || val2 > 0)
+                {
+
+                }
+                else
+                {
+
+                    DataRow dr = hackingtable.NewRow();
+                    dr[0] = url;
+                    dr[1] = title;
+                    hackingtable.Rows.Add(dr);
+                }
+            }
+
+            dataGridView1.DataSource = hackingtable;
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
+}
